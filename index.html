@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BGMI PROLEAGUE - Official</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== FULL BACKGROUND IMAGE ===== */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: url('https://i.ibb.co/d4ktcVP9/1742278841241-a8b8dc7b-d080-4e8b-88e2-3d019c7ea99f.png') center center / cover no-repeat;
+            animation: bgZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* ===== DARK OVERLAY ===== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(2px);
+        }
+
+        /* ===== GLOW ORBS ===== */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: 1;
+            animation: orbFloat 15s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .glow-orb.orb1 {
+            width: 500px;
+            height: 500px;
+            background: #ffd700;
+            top: -150px;
+            right: -150px;
+            opacity: 0.15;
+        }
+        .glow-orb.orb2 {
+            width: 400px;
+            height: 400px;
+            background: #ff6b00;
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
+            opacity: 0.12;
+        }
+        .glow-orb.orb3 {
+            width: 300px;
+            height: 300px;
+            background: #ff4500;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+            opacity: 0.08;
+        }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.3); }
+        }
+
+        /* ===== PARTICLES ===== */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            z-index: 1;
+            animation: particleMove linear infinite;
+            pointer-events: none;
+        }
+        @keyframes particleMove {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* ===== MAIN CARD ===== */
+        .main-card {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 60px 45px;
+            max-width: 520px;
+            width: 90%;
+            animation: cardIn 0.8s ease-out;
+        }
+        @keyframes cardIn {
+            0% { transform: scale(0.9) translateY(30px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* ===== LOGO ===== */
+        .logo-wrapper {
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        .logo-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.2), 0 0 100px rgba(255, 215, 0, 0.05);
+            transition: 0.3s;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 100px rgba(255, 215, 0, 0.4), 0 0 150px rgba(255, 215, 0, 0.1); }
+        }
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== RING ANIMATION ===== */
+        .ring {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 215, 0, 0.1);
+            animation: ringSpin 15s linear infinite;
+        }
+        .ring::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+        .ring::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 50%;
+            width: 8px;
+            height: 8px;
+            background: #ff6b00;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
+        }
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== TITLE ===== */
+        .main-card h1 {
+            font-size: 44px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 2px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #ff4500, #ffd700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradShift 5s ease-in-out infinite;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 20px rgba(255, 215, 0, 0.15));
+        }
+        @keyframes gradShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .main-card .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 300;
+        }
+
+        .main-card .tagline {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+        .main-card .tagline span {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            margin: 12px auto 20px;
+            border-radius: 10px;
+        }
+
+        /* ===== VERSION BADGE ===== */
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 5px 18px;
+            border-radius: 50px;
+            font-size: 11px;
+            color: #ffd700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+            backdrop-filter: blur(10px);
+        }
+        .version-badge i {
+            margin-right: 6px;
+        }
+
+        /* ===== DOWNLOAD BUTTON ===== */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #ff8c00, #e63900);
+            border-radius: 16px;
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 40px rgba(255, 107, 0, 0.4);
+            width: 100%;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: btnShine 3s ease-in-out infinite;
+        }
+        @keyframes btnShine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        .download-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 60px rgba(255, 107, 0, 0.6);
+        }
+        .download-btn:active {
+            transform: scale(0.97);
+        }
+        .download-btn i {
+            font-size: 28px;
+            animation: bounceIcon 2s ease-in-out infinite;
+        }
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .download-btn .btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+        .download-btn .btn-text .main {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .download-btn .btn-text .sub {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        /* ===== FILE INFO ===== */
+        .file-info {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .file-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .file-info .dot {
+            color: #ffd700;
+            font-size: 6px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-text {
+            margin-top: 18px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .main-card {
+                padding: 30px 25px 28px;
+            }
+            .main-card h1 {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+            .logo-img {
+                width: 100px;
+                height: 100px;
+            }
+            .ring {
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+            }
+            .download-btn {
+                padding: 16px 30px;
+                font-size: 18px;
+                gap: 14px;
+            }
+            .download-btn i {
+                font-size: 22px;
+            }
+            .download-btn .btn-text .main {
+                font-size: 17px;
+            }
+            .download-btn .btn-text .sub {
+                font-size: 10px;
+            }
+            .main-card .tagline {
+                font-size: 14px;
+            }
+            .file-info {
+                font-size: 10px;
+                gap: 10px;
+            }
+            .glow-orb.orb1 {
+                width: 300px;
+                height: 300px;
+                top: -100px;
+                right: -100px;
+            }
+            .glow-orb.orb2 {
+                width: 250px;
+                height: 250px;
+            }
+        }
+        @media (max-width: 400px) {
+            .main-card {
+                padding: 20px 16px 20px;
+            }
+            .main-card h1 {
+                font-size: 26px;
+                letter-spacing: 1px;
+            }
+            .logo-img {
+                width: 80px;
+                height: 80px;
+            }
+            .version-badge {
+                font-size: 9px;
+                padding: 3px 12px;
+            }
+            .download-btn {
+                padding: 14px 20px;
+                font-size: 15px;
+                gap: 10px;
+            }
+            .download-btn i {
+                font-size: 18px;
+            }
+            .download-btn .btn-text .main {
+                font-size: 14px;
+            }
+            .download-btn .btn-text .sub {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== FULL BACKGROUND IMAGE ===== -->
+    <div class="bg-image"></div>
+
+    <!-- ===== DARK OVERLAY ===== -->
+    <div class="overlay"></div>
+
+    <!-- ===== GLOW ORBS ===== -->
+    <div class="glow-orb orb1"></div>
+    <div class="glow-orb orb2"></div>
+    <div class="glow-orb orb3"></div>
+
+    <!-- ===== PARTICLES (JavaScript Generated) ===== -->
+
+    <!-- ===== MAIN CARD ===== -->
+    <div class="main-card">
+
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <div class="ring"></div>
+            <img 
+                src="https://i.ibb.co/d4ktcVP9/1742278841241-a8b8dc7b-d080-4e8b-88e2-3d019c7ea99f.png" 
+                alt="BGMI GOLDEN" 
+                class="logo-img"
+                onerror="this.style.display='none'; this.parentElement.querySelector('.ring').style.display='none';"
+            />
+        </div>
+
+        <!-- Title -->
+        <h1>BGMI PROLEAGUE</h1>
+        <p class="subtitle">⚡ Official Tournament ⚡</p>
+        <div class="divider"></div>
+        <p class="tagline">
+            <i class="fas fa-trophy" style="color:#ffd700; margin-right:8px;"></i>
+            Join the <span>Golden Era</span> of Battle Royale
+        </p>
+
+        <!-- Version -->
+        <div class="version-badge">
+            <i class="fas fa-code-branch"></i> v2.0.1
+        </div>
+
+        <!-- ===== DOWNLOAD BUTTON WITH YOUR APK LINK ===== -->
+        <a href="https://files.catbox.moe/f3k0ut.apk" class="download-btn" id="downloadBtn">
+            <i class="fas fa-download"></i>
+            <span class="btn-text">
+                <span class="main">Download APK</span>
+                <span class="sub">Free • Secure • Latest</span>
+            </span>
+        </a>
+
+        <div class="file-info">
+            <span><i class="fas fa-check-circle" style="color:#3fb950;"></i> Android</span>
+            <span class="dot">●</span>
+            <span><i class="fas fa-shield-alt" style="color:#58a6ff;"></i> Verified</span>
+            <span class="dot">●</span>
+            <span><i class="fas fa-google-drive" style="color:#ffd700;"></i> Catbox</span>
+        </div>
+
+        <div class="footer-text">
+            <i class="fas fa-crown" style="color:#ffd700; opacity:0.5;"></i>
+            #BGMI #GoldenTournament
+        </div>
+
+    </div>
+
+    <script>
+        // ===== PARTICLES GENERATOR =====
+        (function createParticles() {
+            const container = document.body;
+            const colors = ['#ffd700', '#ff8c00', '#ff4500', '#ffffff'];
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                const size = Math.random() * 3 + 1;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.opacity = Math.random() * 0.35 + 0.05;
+                p.style.animationDuration = (Math.random() * 18 + 12) + 's';
+                p.style.animationDelay = (Math.random() * 15) + 's';
+                container.appendChild(p);
+            }
+        })();
+
+        // ===== DOWNLOAD BUTTON CLICK =====
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            console.log('📥 BGMI PROLEAGUE APK Download started from !');
+        });
+
+        // ===== BUTTON PRESS ANIMATION =====
+        const btn = document.getElementById('downloadBtn');
+        btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.96)');
+        btn.addEventListener('mouseup', () => btn.style.transform = '');
+        btn.addEventListener('mouseleave', () => btn.style.transform = '');
+    </script>
+
+</body>
+</html>
